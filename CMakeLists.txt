@@ -6,6 +6,8 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(CTest)
 
+include(CMakePackageConfigHelpers)
+
 include(TestBigEndian)
 test_big_endian(WORDS_BIGENDIAN)
 
@@ -67,12 +69,12 @@ endif()
 set(libaec_CONFIG_IN  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libaec-config.cmake.in)
 set(libaec_CONFIG_OUT ${CMAKE_CURRENT_BINARY_DIR}/cmake/libaec-config.cmake)
 configure_file(${libaec_CONFIG_IN} ${libaec_CONFIG_OUT} @ONLY)
-set(libaec_CONFIG_VERSION_IN  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libaec-config-version.cmake.in)
-set(libaec_CONFIG_VERSION_OUT ${CMAKE_CURRENT_BINARY_DIR}/cmake/libaec-config-version.cmake)
-configure_file(${libaec_CONFIG_VERSION_IN} ${libaec_CONFIG_VERSION_OUT} @ONLY)
 install(FILES ${libaec_CONFIG_OUT}
         DESTINATION cmake)
-install(FILES ${libaec_CONFIG_VERSION_OUT}
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  COMPATIBILITY SameMajorVersion)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
         DESTINATION cmake)
 
 # Cpack configuration mainly for Windows installer
